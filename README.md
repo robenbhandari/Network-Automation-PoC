@@ -132,9 +132,7 @@ Network-Automation-PoC/
 
 1\. \*\*Clone the repository:\*\*
 
-git clone https://github.com/MN521-SYDNEY-GROUP4/Network-Automation-PoC.git
-
-cd Network-Automation-PoC
+git clone https://github.com/robenbhandari/Network-Automation-PoCcd Network-Automation-PoC
 
 
 
