@@ -158,6 +158,136 @@ ansible-playbook -i inventories/production.yml playbooks/vlan\_config.yml
 
 
 
+Creates VLANs 10 (SALES) and 20 (HR)
+
+
+
+Configures access ports and trunk links
+
+
+
+OSPF Configuration
+
+ansible-playbook -i inventories/production.yml playbooks/ospf\_config.yml
+
+Configures OSPF on all routers in Area 0
+
+
+
+Advertises connected networks
+
+
+
+BGP Configuration
+
+ansible-playbook -i inventories/production.yml playbooks/bgp\_config.yml
+
+Establishes eBGP peering between Router-1 and ISP
+
+
+
+Advertises internal networks
+
+
+
+ACL Configuration
+
+ansible-playbook -i inventories/production.yml playbooks/acl\_config.yml
+
+Applies ACL to block VLAN 20 internet access
+
+
+
+Permits all other traffic
+
+
+
+Firewall Configuration
+
+ansible-playbook -i inventories/production.yml playbooks/firewall\_config.yml
+
+Configures security zones and policies
+
+
+
+Blocks inbound ICMP from internet
+
+
+
+Device Credentials
+
+Credentials are stored in group\_vars/all.yml. For production use, consider using Ansible Vault:
+
+
+
+
+
+ansible-vault create group\_vars/all.yml
+
+Testing
+
+After running playbooks, verify configurations:
+
+
+
+
+
+\# Test connectivity
+
+ansible routers -i inventories/production.yml -m ping
+
+
+
+\# Gather facts
+
+ansible-playbook -i inventories/production.yml playbooks/gather\_facts.yml
+
+Contributing
+
+Fork the repository
+
+
+
+Create a feature branch
+
+
+
+Commit your changes
+
+
+
+Push to the branch
+
+
+
+Create a Pull Request
+
+
+
+Group Members
+
+Rabin Bhandari
+
+
+
+Bipin Giri
+
+
+
+Amrit Adhikari
+
+
+
+Binay Shrestha
+
+
+
+License
+
+MIT License
+
+
+
 
 
 
