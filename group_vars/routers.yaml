@@ -1,0 +1,11 @@
+---
+# Variables specific to routers
+
+router_config:
+  logging: true
+  cdp: true
+  ntp: true
+
+ospf_settings:
+  area: 0
+  network_type: broadcast

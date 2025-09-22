@@ -1,0 +1,31 @@
+! Base configuration for {{ inventory_hostname }}
+hostname {{ inventory_hostname }}
+!
+! Enable secret
+enable secret {{ enable_secret }}
+!
+! Domain name
+ip domain-name {{ domain_name }}
+!
+! SSH configuration
+ip ssh version 2
+crypto key generate rsa modulus 2048
+!
+! Line configuration
+line con 0
+ logging synchronous
+ login local
+line vty 0 4
+ transport input ssh
+ login local
+!
+! SNMP configuration
+snmp-server community {{ snmp_community }} RO
+!
+! NTP configuration
+ntp server {{ ntp_server }}
+!
+! Logging
+logging buffered 16384
+!
+end

@@ -1,0 +1,16 @@
+---
+# Variables for all groups
+
+# Common settings
+ansible_user: "admin"
+ansible_ssh_pass: "Cisco123!"
+ansible_become_pass: "Enable123!"
+
+# Network settings
+domain_name: "mn521-group4.local"
+dns_servers:
+  - 8.8.8.8
+  - 8.8.4.4
+
+# Time settings
+timezone: "Australia/Sydney"

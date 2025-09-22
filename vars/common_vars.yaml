@@ -1,0 +1,20 @@
+---
+# Common variables for all playbooks
+
+# Authentication credentials
+ansible_user: "admin"
+ansible_password: "Cisco123!"
+ansible_network_os: "ios"
+ansible_connection: "network_cli"
+
+# Juniper specific credentials
+juniper_user: "admin"
+juniper_password: "Juniper123!"
+
+# Network parameters
+domain_name: "mn521.local"
+ntp_server: "192.168.100.100"
+snmp_community: "MN521_GROUP4"
+
+# Enable secret
+enable_secret: "Enable123!"

@@ -1,0 +1,38 @@
+---
+- name: Configure BGP Peering
+  hosts: routers
+  gather_facts: no
+  connection: network_cli
+  vars_files:
+    - ../vars/common_vars.yml
+    - ../vars/bgp_vars.yml
+
+  tasks:
+    - name: Configure BGP on Router-1 for ISP peering
+      cisco.ios.ios_bgp_global:
+        config:
+          as_number: "{{ bgp_asn }}"
+          router_id: "{{ bgp_router_id }}"
+          neighbors:
+            - neighbor: "{{ isp_neighbor_ip }}"
+              remote_as: "{{ isp_asn }}"
+          networks:
+            - prefix: "{{ advertised_network }}"
+              mask: "{{ advertised_mask }}"
+        state: merged
+      when: inventory_hostname == "router-1"
+
+    - name: Verify BGP session
+      cisco.ios.ios_bgp_command:
+        commands: show ip bgp summary
+      register: bgp_summary
+      when: inventory_hostname == "router-1"
+
+    - name: Display BGP summary
+      debug:
+        msg: "BGP summary on {{ inventory_hostname }}: {{ bgp_summary.stdout }}"
+      when: inventory_hostname == "router-1"
+
+    - name: Save configuration
+      cisco.ios.ios_config:
+        save_when: modified

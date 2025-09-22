@@ -1,0 +1,11 @@
+---
+# Variables specific to firewall
+
+juniper_user: "admin"
+juniper_password: "Juniper123!"
+ansible_network_os: "junos"
+ansible_connection: "netconf"
+
+firewall_policies:
+  default_policy: "deny-all"
+  log_settings: "session-close"

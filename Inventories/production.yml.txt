@@ -1,0 +1,53 @@
+
+## **inventories/production.yml**
+
+```yaml
+---
+# Network Automation PoC Inventory
+# Production environment devices
+
+all:
+  children:
+    switches:
+      hosts:
+        switch-1:
+          ansible_host: 192.168.100.11
+          device_type: ios
+        switch-2:
+          ansible_host: 192.168.100.12
+          device_type: ios
+    
+    routers:
+      hosts:
+        router-1:
+          ansible_host: 192.168.100.1
+          device_type: ios
+          bgp_asn: 65001
+        router-2:
+          ansible_host: 192.168.100.2
+          device_type: ios
+        router-3:
+          ansible_host: 192.168.100.3
+          device_type: ios
+        router-4:
+          ansible_host: 192.168.100.4
+          device_type: ios
+    
+    firewall:
+      hosts:
+        srx-firewall:
+          ansible_host: 192.168.100.254
+          device_type: junos
+    
+    isp:
+      hosts:
+        isp-router:
+          ansible_host: 209.165.200.226
+          device_type: ios
+          bgp_asn: 65000
+    
+    automation:
+      hosts:
+        ansible-controller:
+          ansible_host: 192.168.100.100
+          ansible_connection: local

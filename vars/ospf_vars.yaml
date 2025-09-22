@@ -1,0 +1,38 @@
+---
+# OSPF configuration variables
+
+ospf_router_id:
+  router-1: 1.1.1.1
+  router-2: 2.2.2.2
+  router-3: 3.3.3.3
+  router-4: 4.4.4.4
+
+ospf_networks:
+  router-1:
+    - address: 192.168.10.0
+      wildcard: 0.0.0.255
+      area: 0
+    - address: 192.168.100.0
+      wildcard: 0.0.0.255
+      area: 0
+  router-2:
+    - address: 192.168.20.0
+      wildcard: 0.0.0.255
+      area: 0
+    - address: 192.168.100.0
+      wildcard: 0.0.0.255
+      area: 0
+  router-3:
+    - address: 192.168.30.0
+      wildcard: 0.0.0.255
+      area: 0
+    - address: 192.168.100.0
+      wildcard: 0.0.0.255
+      area: 0
+  router-4:
+    - address: 192.168.40.0
+      wildcard: 0.0.0.255
+      area: 0
+    - address: 192.168.100.0
+      wildcard: 0.0.0.255
+      area: 0

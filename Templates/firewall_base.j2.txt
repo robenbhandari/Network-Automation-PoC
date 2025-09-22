@@ -1,0 +1,41 @@
+system {
+    host-name {{ inventory_hostname }};
+    domain-name {{ domain_name }};
+    root-authentication {
+        encrypted-password "{{ root_password }}";
+    }
+    services {
+        ssh;
+        netconf {
+            ssh;
+        }
+    }
+    syslog {
+        user * {
+            any emergency;
+        }
+        file messages {
+            any notice;
+            authorization info;
+        }
+    }
+}
+security {
+    zones {
+        security-zone trust {
+            host-inbound-traffic {
+                system-services {
+                    ssh;
+                    ping;
+                }
+            }
+        }
+        security-zone untrust {
+            host-inbound-traffic {
+                system-services {
+                    ssh;
+                }
+            }
+        }
+    }
+}

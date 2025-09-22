@@ -1,0 +1,37 @@
+---
+# VLAN configuration variables
+
+vlan_config:
+  - vlan_id: 10
+    name: SALES
+    state: active
+  - vlan_id: 20
+    name: HR
+    state: active
+
+# Access port configuration
+access_ports_config:
+  switch-1:
+    - interface: GigabitEthernet0/1
+      vlan: 10
+      description: "PC-VLAN10"
+    - interface: GigabitEthernet0/2
+      vlan: 20
+      description: "PC-VLAN20"
+
+access_ports:
+  - name: "{{ item.interface }}"
+    description: "{{ item.description }}"
+    enabled: true
+    mode: access
+    access:
+      vlan: "{{ item.vlan }}"
+
+trunk_ports:
+  - name: GigabitEthernet0/0
+    description: "Trunk to other switch"
+    enabled: true
+    mode: trunk
+    trunk:
+      allowed_vlans: "10,20"
+      native_vlan: 1

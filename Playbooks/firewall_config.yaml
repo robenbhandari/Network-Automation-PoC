@@ -1,0 +1,57 @@
+---
+- name: Configure Juniper SRX Firewall Policies
+  hosts: firewall
+  gather_facts: no
+  connection: netconf
+  vars_files:
+    - ../vars/common_vars.yml
+    - ../vars/security_vars.yml
+
+  tasks:
+    - name: Configure security zones
+      junipernetworks.junos.junos_security_zones:
+        config:
+          - zones:
+              - name: trust
+                interfaces:
+                  - name: "{{ trust_interface }}"
+              - name: untrust
+                interfaces:
+                  - name: "{{ untrust_interface }}"
+        state: merged
+
+    - name: Configure security policies to block external ICMP
+      junipernetworks.junos.junos_security_policies:
+        config:
+          - from_zone: untrust
+            to_zone: trust
+            policies:
+              - name: deny-external-icmp
+                match:
+                  source_address: any
+                  destination_address: any
+                  application: junos-icmp-all
+                then:
+                  action: deny
+                  log: true
+              - name: permit-other-traffic
+                match:
+                  source_address: any
+                  destination_address: any
+                  application: any
+                then:
+                  action: permit
+        state: merged
+
+    - name: Commit configuration
+      junipernetworks.junos.junos_commit:
+
+    - name: Verify security policies
+      junipernetworks.junos.junos_command:
+        commands:
+          - show security policies
+      register: security_policies
+
+    - name: Display security policies
+      debug:
+        msg: "Security policies: {{ security_policies.stdout }}"

@@ -1,0 +1,20 @@
+---
+# Host-specific variables for SRX firewall
+
+hostname: "SRX-FIREWALL"
+system_root_password: "$5$rounds=535000$Wr6lR9bq9g8b6Q9k$hashed_password"
+
+security_zones:
+  trust:
+    interfaces: ["ge-0/0/0.0"]
+  untrust:
+    interfaces: ["ge-0/0/1.0"]
+
+policies:
+  from_untrust_to_trust:
+    - policy: "deny-icmp"
+      match:
+        source: any
+        destination: any
+        application: junos-icmp-all
+      then: deny

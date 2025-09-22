@@ -1,0 +1,11 @@
+---
+# Variables specific to switches
+
+switch_config:
+  spanning_tree: true
+  vtp_mode: transparent
+
+interfaces:
+  - name: Vlan1
+    ip_address: 192.168.100.11
+    subnet_mask: 255.255.255.0

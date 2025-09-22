@@ -1,0 +1,24 @@
+---
+# Host-specific variables for switch-1
+
+hostname: "SWITCH-1"
+management_ip: "192.168.100.11/24"
+gateway: "192.168.100.1"
+
+vlans:
+  10: "SALES"
+  20: "HR"
+
+interfaces:
+  Gi0/1:
+    description: "PC-VLAN10"
+    vlan: 10
+    mode: access
+  Gi0/2:
+    description: "PC-VLAN20" 
+    vlan: 20
+    mode: access
+  Gi0/0:
+    description: "Trunk to SWITCH-2"
+    mode: trunk
+    trunk_vlans: "10,20"

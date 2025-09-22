@@ -1,0 +1,55 @@
+---
+- name: Configure Access Control Lists
+  hosts: router-1
+  gather_facts: no
+  connection: network_cli
+  vars_files:
+    - ../vars/common_vars.yml
+    - ../vars/security_vars.yml
+
+  tasks:
+    - name: Configure extended ACL to block VLAN 20 internet access
+      cisco.ios.ios_acls:
+        config:
+          - acls:
+              - name: "{{ acl_name }}"
+                acl_type: extended
+                aces:
+                  - sequence: 10
+                    grant: deny
+                    source:
+                      address: "{{ vlan_20_network }}"
+                      wildcard_bits: "{{ vlan_20_wildcard }}"
+                    destination: any
+                    protocol: ip
+                  - sequence: 20
+                    grant: permit
+                    source: any
+                    destination: any
+                    protocol: ip
+        state: merged
+
+    - name: Apply ACL to inbound interface
+      cisco.ios.ios_acl_interfaces:
+        config:
+          - name: "{{ acl_interface }}"
+            access_groups:
+              - afi: ipv4
+                acls:
+                  - name: "{{ acl_name }}"
+                    direction: in
+        state: merged
+
+    - name: Verify ACL configuration
+      cisco.ios.ios_acl_command:
+        commands: 
+          - show ip access-lists {{ acl_name }}
+      register: acl_show
+
+    - name: Display ACL configuration
+      debug:
+        msg: "ACL configuration: {{ acl_show.stdout }}"
+
+    - name: Save configuration
+      cisco.ios.ios_config:
+        save_when: modified

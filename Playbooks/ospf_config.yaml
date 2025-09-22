@@ -1,0 +1,29 @@
+---
+- name: Configure OSPF Routing Protocol
+  hosts: routers
+  gather_facts: no
+  connection: network_cli
+  vars_files:
+    - ../vars/common_vars.yml
+    - ../vars/ospf_vars.yml
+
+  tasks:
+    - name: Configure OSPF process
+      cisco.ios.ios_ospf:
+        config:
+          - router_id: "{{ ospf_router_id[inventory_hostname] }}"
+            networks: "{{ ospf_networks[inventory_hostname] }}"
+        state: merged
+
+    - name: Verify OSPF neighbors
+      cisco.ios.ios_ospf_command:
+        commands: show ip ospf neighbor
+      register: ospf_neighbors
+
+    - name: Display OSPF neighbor status
+      debug:
+        msg: "OSPF neighbors on {{ inventory_hostname }}: {{ ospf_neighbors.stdout }}"
+
+    - name: Save configuration
+      cisco.ios.ios_config:
+        save_when: modified

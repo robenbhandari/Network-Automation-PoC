@@ -1,0 +1,11 @@
+---
+# Security configuration variables
+
+acl_name: "VLAN20-BLOCK"
+vlan_20_network: "192.168.20.0"
+vlan_20_wildcard: "0.0.0.255"
+acl_interface: "GigabitEthernet0/1"
+
+# Firewall variables
+trust_interface: "ge-0/0/0"
+untrust_interface: "ge-0/0/1"

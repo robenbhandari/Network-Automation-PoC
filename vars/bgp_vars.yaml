@@ -1,0 +1,9 @@
+---
+# BGP configuration variables
+
+bgp_asn: 65001
+isp_asn: 65000
+bgp_router_id: 192.168.100.1
+isp_neighbor_ip: 209.165.200.226
+advertised_network: 192.168.0.0
+advertised_mask: 255.255.0.0

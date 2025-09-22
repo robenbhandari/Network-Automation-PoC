@@ -1,0 +1,34 @@
+---
+- name: Configure VLANs on Cisco Switches
+  hosts: switches
+  gather_facts: no
+  connection: network_cli
+  vars_files:
+    - ../vars/common_vars.yml
+    - ../vars/vlan_vars.yml
+
+  tasks:
+    - name: Ensure VLANs are configured
+      cisco.ios.ios_vlans:
+        config: "{{ vlan_config }}"
+        state: merged
+      register: vlan_result
+
+    - name: Configure access ports for VLANs
+      cisco.ios.ios_interfaces:
+        config: "{{ access_ports }}"
+        state: merged
+      when: inventory_hostname in access_ports_config
+
+    - name: Configure trunk ports between switches
+      cisco.ios.ios_interfaces:
+        config: "{{ trunk_ports }}"
+        state: merged
+
+    - name: Display VLAN configuration result
+      debug:
+        msg: "VLAN configuration completed on {{ inventory_hostname }}"
+
+    - name: Save configuration
+      cisco.ios.ios_config:
+        save_when: modified
