@@ -7,5 +7,5 @@ router_config:
   ntp: true
 
 ospf_settings:
-  area: 0
+  area: 1
   network_type: broadcast
