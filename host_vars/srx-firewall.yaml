@@ -17,6 +17,6 @@ policies:
         source: any
         destination: any
         application: junos-icmp-all
-      then: deny
+      then: allow
 
 ######################################
