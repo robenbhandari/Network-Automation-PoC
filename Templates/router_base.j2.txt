@@ -1,3 +1,4 @@
+//this is the documentation for router base code
 ! Base configuration for {{ inventory_hostname }}
 hostname {{ inventory_hostname }}
 !
