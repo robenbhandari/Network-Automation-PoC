@@ -11,7 +11,7 @@ all:
     switches:
       hosts:
         switch-1:
-          ansible_host: 192.168.100.11
+          ansible_host: 192.168.100.10
           device_type: ios
         switch-2:
           ansible_host: 192.168.100.12

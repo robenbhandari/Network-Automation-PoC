@@ -3,7 +3,7 @@
 
 hostname: "ROUTER-1"
 bgp_asn: 65001
-router_id: "1.1.1.1"
+router_id: "1.1.1.0"
 
 interfaces:
   Gi0/0:
