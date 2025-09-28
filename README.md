@@ -1,294 +1,226 @@
+---
+
 # Network-Automation-PoC
 
+## MN521 - Network Automation Group Project
 
+This repository contains **Ansible playbooks, configuration templates, and variables** designed to automate network operations across a **multi-vendor hybrid environment**. The Proof of Concept (PoC) showcases how infrastructure teams can reduce manual effort, minimize errors, and standardize configurations using modern automation practices.
 
-\# Network Automation Proof of Concept (PoC)
+---
 
-\## MN521 - Network Automation Group Project
+## 🔹 Project Overview
 
+The objective of this PoC is to demonstrate how **Ansible** can be leveraged for end-to-end automation of common network tasks in a mixed-vendor environment. The implementation focuses on:
 
+* **Cisco Switches (IOSvL2)** – Automating VLAN configuration and trunk/access assignments.
+* **Cisco Routers (IOSv)** – Automating OSPF and BGP configuration, ACLs, and edge routing.
+* **Juniper SRX (vSRX)** – Automating firewall policy and zone configuration.
+* **Controller Node (Ubuntu)** – Hosting Ansible, inventory, and playbooks.
 
-This repository contains Ansible playbooks and configurations for automating network operations in a multi-vendor environment .
+Key capabilities demonstrated include:
 
+✅ Automated VLAN creation and port assignment
+✅ OSPF routing configuration across multiple routers in Area 0
+✅ BGP peering with an external ISP router
+✅ ACL deployment to restrict VLAN 20’s internet access
+✅ Juniper firewall security zone and policy automation
 
+This project validates how **multi-vendor automation** reduces configuration drift, increases repeatability, and accelerates deployment times in enterprise-grade environments.
 
-\## Project Overview
+---
 
-This Proof of Concept demonstrates network automation using Ansible to manage:
+## 🔹 Network Topology
 
-\- VLAN configurations on Cisco switches
+The PoC lab is designed to replicate a small-scale enterprise network with external ISP connectivity.
 
-\- OSPF routing on Cisco routers
+**Components:**
 
-\- BGP peering with external ISP
+* **2× Cisco Switches (IOSvL2)** – Core/distribution VLAN management
+* **4× Cisco Routers (IOSv)** – Internal routing, OSPF/BGP operations
+* **1× Juniper SRX Firewall (vSRX)** – Internet edge security enforcement
+* **1× Ubuntu Controller** – Central automation server running Ansible
+* **1× External ISP Router** – BGP peering and simulated internet
 
-\- Access Control Lists (ACLs) on Cisco routers
+> 📌 The topology simulates **LAN, WAN, and security domains** with integrated automation workflows.
 
-\- Firewall policies on Juniper SRX
+---
 
+## 🔹 Prerequisites
 
+Before deploying this PoC, ensure the following:
 
-\## Topology
+* **Software & Tools**
 
-The network topology consists of:
+  * Ansible **2.9+**
+  * Python **3.8+**
+  * Git installed on controller node
 
-\- 2x Cisco Switches (IOSvL2)
+* **Ansible Collections**
 
-\- 4x Cisco Routers (IOSv) 
+  ```bash
+  ansible-galaxy collection install cisco.ios
+  ansible-galaxy collection install junipernetworks.junos
+  ```
 
-\- 1x Juniper SRX Firewall (vSRX)
+* **Connectivity**
 
-\- 1x Ubuntu Controller (Ansible host)
+  * All network devices must be **reachable via SSH**
+  * Proper user credentials configured in inventory or stored securely in **Ansible Vault**
 
-\- External ISP Router
+---
 
+## 🔹 Repository Structure
 
-
-\## Prerequisites
-
-\- Ansible 2.9+
-
-\- Python 3.8+
-
-\- Network devices accessible via SSH
-
-\- Required Ansible collections:
-
-&nbsp; - `ansible-galaxy collection install cisco.ios`
-
-&nbsp; - `ansible-galaxy collection install junipernetworks.junos`
-
-
-
-\## Repository Structure
-
+```
 Network-Automation-PoC/
-
 ├── inventories/
-
-│ └── production.yml # Device inventory
-
-├── playbooks/ # Main playbooks
-
-│ ├── vlan\_config.yml
-
-│ ├── ospf\_config.yml
-
-│ ├── bgp\_config.yml
-
-│ ├── acl\_config.yml
-
-│ └── firewall\_config.yml
-
-├── templates/ # Configuration templates
-
-│ ├── switch\_base.j2
-
-│ ├── router\_base.j2
-
-│ └── firewall\_base.j2
-
-├── vars/ # Variable files
-
-│ ├── common\_vars.yml
-
-│ ├── vlan\_vars.yml
-
-│ ├── ospf\_vars.yml
-
-│ ├── bgp\_vars.yml
-
-│ └── security\_vars.yml
-
-├── group\_vars/ # Group-specific variables
-
-│ ├── all.yml
-
-│ ├── switches.yml
-
-│ ├── routers.yml
-
-│ └── firewall.yml
-
-├── host\_vars/ # Host-specific variables
-
-│ ├── switch-1.yml
-
-│ ├── router-1.yml
-
-│ └── srx-firewall.yml
-
-├── docs/ # Documentation
-
-│ └── screenshots/
-
+│   └── production.yml        # Device inventory (IPs, groups, credentials)
+├── playbooks/                # Automation workflows
+│   ├── vlan_config.yml       # VLAN creation & port assignments
+│   ├── ospf_config.yml       # OSPF deployment
+│   ├── bgp_config.yml        # BGP peering with ISP
+│   ├── acl_config.yml        # Access control lists
+│   └── firewall_config.yml   # Juniper firewall automation
+├── templates/                # Jinja2 configuration templates
+│   ├── switch_base.j2
+│   ├── router_base.j2
+│   └── firewall_base.j2
+├── vars/                     # Variable definitions
+│   ├── common_vars.yml
+│   ├── vlan_vars.yml
+│   ├── ospf_vars.yml
+│   ├── bgp_vars.yml
+│   └── security_vars.yml
+├── group_vars/               # Group-level variables
+│   ├── all.yml
+│   ├── switches.yml
+│   ├── routers.yml
+│   └── firewall.yml
+├── host_vars/                # Host-level variables
+│   ├── switch-1.yml
+│   ├── router-1.yml
+│   └── srx-firewall.yml
+├── docs/                     # Documentation & evidence
+│   └── screenshots/
 └── README.md
+```
 
+---
 
+## 🔹 Quick Start Guide
 
-\## Quick Start
+### 1. Clone the Repository
 
-
-
-1\. \*\*Clone the repository:\*\*
-
+```bash
 git clone https://github.com/robenbhandari/Network-Automation-PoC
+cd Network-Automation-PoC
+```
 
+### 2. Install Required Collections
 
-
-Install required collections:
-
-
-
+```bash
 ansible-galaxy collection install cisco.ios
-
 ansible-galaxy collection install junipernetworks.junos
+```
 
+### 3. Configure Inventory
 
+Edit `inventories/production.yml` with device IP addresses, usernames, and passwords.
 
-Configure inventory:
+For production environments, encrypt credentials with **Ansible Vault**:
 
-Update inventories/production.yml with your device IP addresses and credentials.
+```bash
+ansible-vault create group_vars/all.yml
+```
 
+### 4. Run Playbooks
 
+* **VLAN Configuration**
 
-Run a playbook:
+  ```bash
+  ansible-playbook -i inventories/production.yml playbooks/vlan_config.yml
+  ```
 
-ansible-playbook -i inventories/production.yml playbooks/vlan\_config.yml
+  * Creates VLAN 10 (SALES) and VLAN 20 (HR)
+  * Configures access/trunk ports
 
+* **OSPF Configuration**
 
+  ```bash
+  ansible-playbook -i inventories/production.yml playbooks/ospf_config.yml
+  ```
 
-Creates VLANs 10 (SALES) and 20 (HR)
+  * Deploys OSPF in Area 0 across routers
+  * Advertises connected networks
 
+* **BGP Configuration**
 
+  ```bash
+  ansible-playbook -i inventories/production.yml playbooks/bgp_config.yml
+  ```
 
-Configures access ports and trunk links
+  * Establishes **eBGP peering** with ISP router
+  * Advertises enterprise internal networks
 
+* **ACL Configuration**
 
+  ```bash
+  ansible-playbook -i inventories/production.yml playbooks/acl_config.yml
+  ```
 
-OSPF Configuration
+  * Blocks **VLAN 20 internet access**
+  * Permits all other traffic
 
-ansible-playbook -i inventories/production.yml playbooks/ospf\_config.yml
+* **Firewall Configuration**
 
-Configures OSPF on all routers in Area 0
+  ```bash
+  ansible-playbook -i inventories/production.yml playbooks/firewall_config.yml
+  ```
 
+  * Creates Juniper **security zones**
+  * Enforces inbound ICMP block from internet
 
+---
 
-Advertises connected networks
+## 🔹 Testing & Verification
 
+* **Ping Test**
 
+  ```bash
+  ansible routers -i inventories/production.yml -m ping
+  ```
 
-BGP Configuration
+* **Gather Device Facts**
 
-ansible-playbook -i inventories/production.yml playbooks/bgp\_config.yml
+  ```bash
+  ansible-playbook -i inventories/production.yml playbooks/gather_facts.yml
+  ```
 
-Establishes eBGP peering between Router-1 and ISP
+* **Manual Verification**
 
+  * Use `show running-config` on devices
+  * Validate VLANs, OSPF neighbors, BGP sessions, ACLs, and firewall rules
 
+---
 
-Advertises internal networks
+## 🔹 Contribution Workflow
 
+1. Fork the repository
+2. Create a feature branch (`feature/my-feature`)
+3. Commit changes with clear messages
+4. Push changes and open a Pull Request
 
+---
 
-ACL Configuration
+## 🔹 Group Members
 
-ansible-playbook -i inventories/production.yml playbooks/acl\_config.yml
+* **Rabin Bhandari**
+* **Bipin Giri**
+* **Amrit Adhikari**
+* **Binay Shrestha**
 
-Applies ACL to block VLAN 20 internet access
+---
 
+## 🔹 License
 
-
-Permits all other traffic
-
-
-
-Firewall Configuration
-
-ansible-playbook -i inventories/production.yml playbooks/firewall\_config.yml
-
-Configures security zones and policies
-
-
-
-Blocks inbound ICMP from internet
-
-
-
-Device Credentials
-
-Credentials are stored in group\_vars/all.yml. For production use, consider using Ansible Vault:
-
-
-
-
-
-ansible-vault create group\_vars/all.yml
-
-Testing
-
-After running playbooks, verify configurations:
-
-
-
-
-
-\# Test connectivity
-
-ansible routers -i inventories/production.yml -m ping
-
-
-
-\# Gather facts
-
-ansible-playbook -i inventories/production.yml playbooks/gather\_facts.yml
-
-Contributing
-
-Fork the repository
-
-
-
-Create a feature branch
-
-
-
-Commit your changes
-
-
-
-Push to the branch
-
-
-
-Create a Pull Request
-
-
-
-Group Members
-
-Rabin Bhandari
-
-
-
-Bipin Giri
-
-
-
-Amrit Adhikari
-
-
-
-Binay Shrestha
-
-
-
-License
-
-MIT License
-
-
-
-
-
-
-
+This project is licensed under the **MIT License**. You are free to use, modify, and distribute with attribution.
