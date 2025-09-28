@@ -218,6 +218,7 @@ ansible-vault create group_vars/all.yml
 * **Bipin Giri**
 * **Amrit Adhikari**
 * **Binay Shrestha**
+* **James Nepal**
 
 ---
 
